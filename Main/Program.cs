@@ -2,11 +2,30 @@
 using Application.UseCases.IntegrateSupplyChain;
 using Main.Factories;
 
-var erpMapper = ERPMapperFactory.makeERPMapper(); 
-var suplierRepository = SupplierRepositoryFactory.makeSupplierRepository();
+if (args.Length==0) {
+  Console.WriteLine("param not passed");
+  return;
+}
 
-var integrateSupplyChain = new IntegrateSupplyChain(erpMapper, suplierRepository);
+switch (args[0])
+{
+  case "isc": 
+    IntegrateSupplyChain();
+    break;
+  default: 
+    Console.WriteLine("invalid param");
+    break;
+}
 
-var response = integrateSupplyChain.Integrate();
+void IntegrateSupplyChain() {
+  Console.WriteLine("usecase:integrating supply chain");
+  var erpMapper = ERPMapperFactory.makeERPMapper(); 
+  var suplierRepository = SupplierRepositoryFactory.makeSupplierRepository();
+  var suplyChainDataSender = SupplyChainDataSenderFactory.makeSupplierChainDataSender();
 
-Console.WriteLine(string.IsNullOrEmpty(response) ?"success integration!": response);
+  var integrateSupplyChain = new IntegrateSupplyChain(erpMapper, suplierRepository,suplyChainDataSender);
+
+  var response = integrateSupplyChain.Integrate();
+
+  Console.WriteLine(string.IsNullOrEmpty(response) ?"success integration!": $"***Fail=> {response}");
+}

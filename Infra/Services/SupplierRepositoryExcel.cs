@@ -11,6 +11,8 @@ public class SupplierRepositoryExcel : ISupplierRepository
     this.pathFile=pathFile;
   }
   public (DataTable fruits, DataTable categories) getAllData() { 
+    Console.WriteLine("getting supplier data...");
+    
     const int _TAB_PRODUCTS= 1;
     const int _TAB_CATEGORIES= 2;
     

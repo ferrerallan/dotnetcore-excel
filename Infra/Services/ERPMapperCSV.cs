@@ -7,37 +7,37 @@ namespace Infra.Services;
 public class ERPMapperCSV : IERPMapper
 {
   private readonly string pathFileCategory;
-  private readonly string pathFileFruit;
-  public ERPMapperCSV( string pathFruit, string pathCategory) {
+  private readonly string pathFileProduct;
+  public ERPMapperCSV( string pathProduct, string pathCategory) {
     //arg #0 => csv file for mapping fruit
     //arg #1 =>  csv file for category
-    pathFileFruit = pathFruit;
+    pathFileProduct = pathProduct;
     pathFileCategory = pathCategory;
   }
   
-  public (List<FruitMappingDTO> fruitMapping, 
+  public (List<ProductMappingDTO> productMapping, 
           List<CategoryMappingDTO> categoryMapping) 
           getMappers()
   {
+    Console.WriteLine("getting mappers...");
     //fruits..
-    var listFruitMapping = new List<FruitMappingDTO>();
-    using (var reader = new StreamReader(pathFileFruit))
+    var listProductMapping = new List<ProductMappingDTO>();
+    using (var reader = new StreamReader(pathFileProduct))
       using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
       {
           csv.Read();
           csv.ReadHeader();
           while (csv.Read()) {
-            /*var record = new FruitMappingDTO(csv.GetField<string>("legacyid"),
-                                             csv.GetField("targetid"));
+            var record = new ProductMappingDTO(csv.GetField<string>("legacyid"),
+                                             csv.GetField<string>("targetid"));
             
-            listFruitMapping.Add(record);*/
-            Console.WriteLine(csv.GetField<string>("targetid"));
+            listProductMapping.Add(record);
           }
       }
     
     //categories
     var listCategoryMapping = new List<CategoryMappingDTO>();
-    using (var reader = new StreamReader(pathFileFruit))
+    using (var reader = new StreamReader(pathFileProduct))
       using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
       {
           csv.Read();
@@ -49,6 +49,6 @@ public class ERPMapperCSV : IERPMapper
             listCategoryMapping.Add(record);
           }
       }
-    return (listFruitMapping,listCategoryMapping);
+    return (listProductMapping,listCategoryMapping);
   }
 }
